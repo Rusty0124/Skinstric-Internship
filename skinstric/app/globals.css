@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* tailwind v4 has no tailwind.config — tokens live here and become utilities (bg-bg, text-offwhite, text-muted) */
+@theme {
+  --color-bg: #0d0d0d;
+  --color-offwhite: #fcfcfc;
+  --color-muted: #6e6d6c;
+}
+
+/* design is all sharp edges and flat — !important so rounded-* / shadow-* utilities can't sneak back in */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-offwhite);
+}
