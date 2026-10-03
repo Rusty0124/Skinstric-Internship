@@ -49,7 +49,11 @@ export default function Result() {
 
   return (
     <main className="relative min-h-screen flex flex-col md:flex-row items-center justify-around gap-8 px-6">
-      <CameraCapture onCapture={setImage} />
+      {/* wrapper keeps the caption stacked above the camera — main flips to flex-row on md, which would put it beside instead */}
+      <div className="flex flex-col items-center gap-3">
+        <p className="text-xs tracking-widest uppercase">Recommended — take a selfie</p>
+        <CameraCapture onCapture={setImage} />
+      </div>
       <GalleryUpload onSelect={setImage} />
       {/* NavFooter is fine here — this Back is a plain navigation, no state to clear */}
       <NavFooter backHref="/testing" />

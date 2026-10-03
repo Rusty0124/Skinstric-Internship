@@ -29,8 +29,7 @@ export default function Testing() {
         },
       );
       const data = await res.json();
-      // their typo, not ours — API returns SUCCUSS, not SUCCESS
-      if (!res.ok || !data.SUCCUSS) throw new Error("Phase One request failed");
+      if (!res.ok || !data.success) throw new Error("Phase One request failed");
       // nothing reads skinstric_profile yet — saved for later steps in the flow
       localStorage.setItem(
         "skinstric_profile",
@@ -38,7 +37,7 @@ export default function Testing() {
       );
       router.push("/result");
     } catch {
-      // network failure and a falsy SUCCUSS both land here — one message covers both
+      // network failure and a falsy SUCCESS both land here — one message covers both
       setError("Something went wrong — check your connection and try again.");
     } finally {
       setSubmitting(false);
