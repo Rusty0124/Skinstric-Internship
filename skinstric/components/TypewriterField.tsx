@@ -1,30 +1,33 @@
 'use client';
-import { useState } from 'react';
 
-type Props = { label: string; value: string; onChange: (v: string) => void };
+type Props = {
+  id: string;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  onEnter: () => void;
+};
 
-export default function TypewriterField({ label, value, onChange }: Props) {
-  const [editing, setEditing] = useState(false);
+// always a real input — the question is the placeholder, so the caret blinks inside it like the reference. no click-to-reveal swap
+export default function TypewriterField({ id, placeholder, value, onChange, onEnter }: Props) {
   return (
-    <div className="mb-6">
-      {/* sr-only — the visible prompt is the "Click to type" button. id comes from label, so two fields with the same label collide */}
-      <label htmlFor={label} className="sr-only">{label}</label>
-      {/* `|| value` keeps a filled field as an input after blur — otherwise it'd flip back to the placeholder and hide what was typed */}
-      {editing || value ? (
-        <input
-          id={label}
-          // only focus after a click — a prefilled field shouldn't grab focus on mount
-          autoFocus={editing}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={() => setEditing(false)}
-          className="bg-transparent border-b border-white text-2xl text-center outline-none"
-        />
-      ) : (
-        <button onClick={() => setEditing(true)} className="text-2xl tracking-widest uppercase text-muted">
-          Click to type
-        </button>
-      )}
+    <div className="flex flex-col items-center w-full max-w-md">
+      <label htmlFor={id} className="mb-2 text-sm uppercase text-muted">Click to type</label>
+      <input
+        id={id}
+        // "click to type" alone doesn't say what to type — screen readers get the question instead
+        aria-label={placeholder}
+        // the page remounts this per step with a new key, so autoFocus lands the caret in each new question
+        autoFocus
+        autoComplete="off"
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') onEnter();
+        }}
+        className="w-full bg-transparent border-b border-fg text-4xl sm:text-5xl font-light tracking-tight text-center outline-none placeholder:text-muted"
+      />
     </div>
   );
 }
