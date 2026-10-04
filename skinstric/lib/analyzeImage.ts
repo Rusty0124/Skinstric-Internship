@@ -1,8 +1,10 @@
 // Phase Two — sends the photo, gets back race/age/gender scores for /summary
 export async function analyzeImage(dataUrl: string) {
   // shrink to max 800px wide at jpeg 0.8 before sending — full-res camera frames make the payload huge
-  const compressed = await new Promise<string>((resolve) => {
+  const compressed = await new Promise<string>((resolve, reject) => {
     const img = new Image();
+    // file the browser can't decode (some HEIC photos) — without this the promise never settles and "Preparing your analysis" spins forever
+    img.onerror = () => reject(new Error('Could not read image'));
     img.onload = () => {
       const canvas = document.createElement('canvas');
       // Math.min(1, …) so images already under 800px never get upscaled
