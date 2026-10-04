@@ -1,10 +1,29 @@
 @import "tailwindcss";
 
-/* tailwind v4 has no tailwind.config — tokens live here and become utilities (bg-bg, text-offwhite, text-muted) */
+/* tailwind v4 has no tailwind.config — tokens live here and become utilities (bg-bg, text-fg, border-line, stroke-fg, fill-fg...) */
+/* named by role, not color — flipping the theme means editing values here, not renaming classes everywhere */
+/* hex values are eyeballed off the live reference — swap for the figma values once we have the file */
 @theme {
-  --color-bg: #0d0d0d;
-  --color-offwhite: #fcfcfc;
-  --color-muted: #6e6d6c;
+  --color-bg: #fcfcfc;
+  --color-fg: #1a1b1c;
+  --color-muted: #8a8f98;
+  /* thin outlines and ring tracks — the big home diamonds, ConfidenceRing's unfilled arc */
+  --color-line: #c8c8c8;
+  /* grey tile fills — /select's diamond, and the summary panels once those are built. strong = the active/clickable one */
+  --color-surface: #f3f3f4;
+  --color-surface-strong: #e1e2e5;
+}
+
+/* inline because --font-geist-sans is set on <html> by next/font at runtime, not here — without inline tailwind resolves it too early and falls back to the system font */
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+}
+
+/* RotatingSquares — duration/direction/delay are set inline per square, this is only the turn */
+@keyframes square-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* design is all sharp edges and flat — !important so rounded-* / shadow-* utilities can't sneak back in */
@@ -16,5 +35,5 @@
 
 html, body {
   background-color: var(--color-bg);
-  color: var(--color-offwhite);
+  color: var(--color-fg);
 }
